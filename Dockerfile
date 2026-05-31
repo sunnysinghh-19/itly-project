@@ -13,7 +13,12 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
-RUN docker-php-ext-install gd zip
+RUN docker-php-ext-install \
+    pdo \
+    pdo_mysql \
+    mysqli \
+    gd \
+    zip
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -21,7 +26,10 @@ WORKDIR /app
 
 COPY . .
 
-RUN composer install
+RUN composer install --no-dev --optimize-autoloader
+
+RUN php artisan config:clear
+RUN php artisan cache:clear
 
 EXPOSE 10000
 
