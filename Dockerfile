@@ -6,10 +6,14 @@ RUN apt-get update && apt-get install -y \
     zip \
     libzip-dev \
     libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
     libonig-dev \
     libxml2-dev
 
-RUN docker-php-ext-install zip
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+
+RUN docker-php-ext-install gd zip
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
