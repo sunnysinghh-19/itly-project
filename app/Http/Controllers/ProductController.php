@@ -18,7 +18,7 @@ class ProductController extends Controller
     public function home()
     {
 
-        $products = Product::latest()->take(8)->get();
+        $products = [];
 
         return view('welcome', compact('products'));
 
